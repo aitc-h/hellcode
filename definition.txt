@@ -1,0 +1,12 @@
+§           whitespace character (alt+21)
+
+♥           addition operator (a+3)
+♦           multiplication operator (a+4)
+♣           division operator (a+5)
+♠           subtraction operator (a+6)
+☼           print (alt+15)
+;           end statement
+
+:: negative numbers are defined as (0-n) for -n
+
+x:(y)       define x as (y)
