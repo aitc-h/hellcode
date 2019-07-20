@@ -5,8 +5,11 @@ from lexer import Lexer
 
 class Parser:
 
-    def __init__(self):
+    def __init__(self, module, builder, printf):
         self.pg = ParserGenerator([x for x, y in Lexer.tokens])
+        self.module = module
+        self.builder = builder
+        self.printf = printf
 
     def parse(self):
         @self.pg.production('program : PRINT OPEN_PAREN expression CLOSE_PAREN SEMI_COLON')
@@ -24,17 +27,17 @@ class Parser:
 
             t = operator.gettokentype()
             if t == 'SUM':
-                return Sum(left, right)
+                return Sum(self.builder, self.module, left, right)
             elif t == 'SUB':
-                return Sub(left, right)
+                return Sub(self.builder, self.module, left, right)
             elif t == 'MUL':
-                return Mul(left, right)
+                return Mul(self.builder, self.module, left, right)
             elif t == 'DIV':
-                return Div(left, right)
+                return Div(self.builder, self.module, left, right)
 
         @self.pg.production('expression : NUMBER')
         def number(p) -> Number:
-            return Number(p[0].value)
+            return Number(self.builder, self.module, p[0].value)
 
         @self.pg.error
         def error_handle(token):

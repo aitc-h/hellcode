@@ -1,13 +1,25 @@
 from lexer import Lexer
 from my_parser import Parser
+from codegen import CodeGen
 
 if __name__ == '__main__':
-    text_input = "☼(5♦4);"
+    fname = "input.hel"
+    with open(fname) as f:
+        text_input = f.read()
 
     lexer = Lexer().get_lexer()
     tokens = lexer.lex(text_input)
 
-    pg = Parser()
+    codegen = CodeGen()
+
+    module = codegen.module
+    builder = codegen.builder
+    printf = codegen.printf
+
+    pg = Parser(module, builder, printf)
     pg.parse()
     parser = pg.get_parser()
     parser.parse(tokens).eval()
+
+    codegen.create_ir()
+    codegen.save_ir("output.hll")
